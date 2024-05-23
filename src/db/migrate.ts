@@ -1,26 +1,20 @@
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { env } from "../env";
-import chalk from "chalk";
-(async () => {
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import { env } from '../env'
+import chalk from 'chalk'
+;(async () => {
   try {
+    const connection = postgres(env.DATABASE_URL, { max: 1 })
 
-    const connection = postgres(env.DATABASE_URL, { max: 1 });
+    const db = drizzle(connection)
 
+    await migrate(db, { migrationsFolder: 'drizzle' })
 
-    const db = drizzle(connection);
-  
-
-    await migrate(db, { migrationsFolder: 'drizzle' });
-
-    console.log(chalk.green("Migrations ran successfully"));
-    await connection.end();
-  
+    console.log(chalk.green('Migrations ran successfully'))
+    await connection.end()
   } catch (error) {
-
   } finally {
-
-    process.exit();
+    process.exit()
   }
-})();
+})()
