@@ -1,0 +1,17 @@
+{
+  "name": "pizzashop-api",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.21.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.30.10",
+    "elysia": "^1.0.22",
+    "postgres": "^3.4.4"
+  }
+}
