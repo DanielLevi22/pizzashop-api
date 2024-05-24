@@ -1,4 +1,4 @@
-import { Elysia, error } from 'elysia'
+import { Elysia } from 'elysia'
 import { registerRestaurant } from './route/register-restaurant'
 import { sendAuthLink } from './route/send-auth-link'
 import { authenticateFromLink } from './route/authenticate-from-link'
