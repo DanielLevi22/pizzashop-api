@@ -1,4 +1,4 @@
-import { Elysia } from 'elysia'
+import { Elysia, error } from 'elysia'
 import { registerRestaurant } from './route/register-restaurant'
 import { sendAuthLink } from './route/send-auth-link'
 import { authenticateFromLink } from './route/authenticate-from-link'
@@ -13,6 +13,20 @@ const app = new Elysia()
   .use(signOut)
   .use(getProfile)
   .use(getManagedRestaurante)
+  .onError(({ code, set, error }) => {
+    switch (code) {
+      case 'VALIDATION': {
+        set.status = error.status
+        return error.toResponse()
+      }
+      default: {
+        set.status = 500
+        console.error(error)
+
+        return new Response(null, { status: 500 })
+      }
+    }
+  })
 app.listen(3333, () => {
   console.log('Server is running on port 3333')
 })
