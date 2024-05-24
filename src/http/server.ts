@@ -4,6 +4,7 @@ import { sendAuthLink } from './route/send-auth-link'
 import { authenticateFromLink } from './route/authenticate-from-link'
 import { signOut } from './route/sign-out'
 import { getProfile } from './route/get-profile'
+import { getManagedRestaurante } from './route/get-menaged-restaurant'
 
 const app = new Elysia()
   .use(registerRestaurant)
@@ -11,7 +12,7 @@ const app = new Elysia()
   .use(authenticateFromLink)
   .use(signOut)
   .use(getProfile)
-
+  .use(getManagedRestaurante)
 app.listen(3333, () => {
   console.log('Server is running on port 3333')
 })
