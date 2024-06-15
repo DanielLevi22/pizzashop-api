@@ -21,8 +21,19 @@ import { cors } from '@elysiajs/cors'
 
 const app = new Elysia()
   .use(
-    cors(cors, {
-      origin: true,
+    cors({
+      credentials: true,
+      allowedHeaders: ['content-type'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+      origin: (request): boolean => {
+        const origin = request.headers.get('origin')
+
+        if (!origin) {
+          return false
+        }
+
+        return true
+      },
     }),
   )
   .use(registerRestaurant)
