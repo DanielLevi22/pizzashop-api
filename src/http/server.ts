@@ -18,6 +18,8 @@ import { getMonthCanceledOrdersAmount } from './route/get-canceled-month-orders-
 import { getPopularProducts } from './route/get-popular-products'
 import { getDailyReceiptInPeriod } from './route/get-daily-receipt-in-period'
 import { cors } from '@elysiajs/cors'
+import { updateProfile } from './route/update-profile'
+import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
   .use(
@@ -54,6 +56,8 @@ const app = new Elysia()
   .use(getMonthCanceledOrdersAmount)
   .use(getPopularProducts)
   .use(getDailyReceiptInPeriod)
+  .use(updateProfile)
+  .use(updateMenu)
 
   .onError(({ code, set, error }) => {
     switch (code) {
