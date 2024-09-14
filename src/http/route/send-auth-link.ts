@@ -1,12 +1,10 @@
 import { Elysia, t } from 'elysia'
 import { db } from '../../db/connection'
-import nodemailer from 'nodemailer'
 import { authLinks } from '../../db/schema'
 import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
-import { mail } from '../../lib/mail'
 import { Resend } from 'resend'
-import { EmailTemplate } from '../../resend/email-template.tsx'
+import { EmailTemplate } from '../../lib/mail/email-template.tsx'
 export const sendAuthLink = new Elysia().post(
   '/authenticate',
   async ({ body }) => {
@@ -46,16 +44,16 @@ export const sendAuthLink = new Elysia().post(
     })
 
     console.log('Resend - data', data, error)
-    const info = await mail.sendMail({
-      from: {
-        name: 'Pizza Shop',
-        address: 'piza@pizzashop.com',
-      },
-      to: email,
-      subject: 'Authenticate to pizza shop',
-      text: `Click the link to authenticate on Pizza Shop: ${authLink.toString()}`,
-    })
-    console.log(nodemailer.getTestMessageUrl(info))
+    // const info = await mail.sendMail({
+    //   from: {
+    //     name: 'Pizza Shop',
+    //     address: 'piza@pizzashop.com',
+    //   },
+    //   to: email,
+    //   subject: 'Authenticate to pizza shop',
+    //   text: `Click the link to authenticate on Pizza Shop: ${authLink.toString()}`,
+    // })
+    // console.log(nodemailer.getTestMessageUrl(info))
   },
   {
     body: t.Object({
