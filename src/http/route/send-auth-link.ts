@@ -5,7 +5,8 @@ import { authLinks } from '../../db/schema'
 import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
 import { mail } from '../../lib/mail'
-
+import { Resend } from 'resend'
+import { EmailTemplate } from '../../resend/email-template.tsx'
 export const sendAuthLink = new Elysia().post(
   '/authenticate',
   async ({ body }) => {
@@ -33,7 +34,18 @@ export const sendAuthLink = new Elysia().post(
     authLink.searchParams.set('code', authLinkCode)
     authLink.searchParams.set('redirect', env.AUTH_REDIRECT_URL)
 
+    const resend = new Resend(env.RESEND_API_KEY)
+
     console.log(authLink.toString())
+    const authLinkString = authLink.toString()
+    const { data, error } = await resend.emails.send({
+      from: 'Pizza Shop <piza@danieldev.tech>', // Formato correto com nome e e-mail
+      to: [email],
+      subject: 'Authenticate to Pizza Shop',
+      react: EmailTemplate({ authLinkString }), // Supondo que você tem o nome do usuário
+    })
+
+    console.log('Resend - data', data, error)
     const info = await mail.sendMail({
       from: {
         name: 'Pizza Shop',

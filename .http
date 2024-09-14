@@ -1,11 +1,13 @@
-# POST http://localhost:3333/restaurants 
-# Content-Type: application/json
+POST http://localhost:3333/restaurants
+Content-Type: application/json
 
-# {
-#   "name": "daniel",
-#   "email": "daniel@outro.com",
-#   "phone": "1234567890"
-# }
+{
+  "restaurantName": "daniel's Diner",
+  "managerName": "Daniel",
+  "email": "daniel@outro.com",
+  "phone": "1234567890"
+}
+
 
 ###
 
