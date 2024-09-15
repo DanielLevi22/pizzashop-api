@@ -3,6 +3,6 @@ import { auth } from '../auth'
 
 export const signOut = new Elysia()
   .use(auth)
-  .post('/sign-out', async ({ signOut: internalSignOut }) => {
-    internalSignOut()
+  .post('/sign-out', async ({ signOutAuth }) => {
+    await signOutAuth()
   })

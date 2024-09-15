@@ -54,7 +54,7 @@ export const auth = new Elysia()
       auth.sameSite = 'none'
     },
 
-    signOut: async () => {
+    signOutAuth: async () => {
       auth.remove()
     },
 
