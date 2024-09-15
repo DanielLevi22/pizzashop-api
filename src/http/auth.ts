@@ -50,7 +50,8 @@ export const auth = new Elysia()
       cookie.auth.httpOnly = true
       cookie.auth.maxAge = 60 * 60 * 24 * 7 // 7 days
       cookie.auth.path = '/'
-      cookie.auth.secure = process.env.NODE_ENV === 'production'
+      cookie.auth.secure = env.NODE_ENV === 'production'
+      cookie.auth.sameSite = 'none'
     },
 
     signOut: async () => {
