@@ -27,7 +27,7 @@ const app = new Elysia()
       credentials: true,
       allowedHeaders: ['content-type'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-      origin: 'origin: /.*.vercel.app$/',
+      origin: 'https://pizza-shop-web-rouge.vercel.app', // Permite requisições apenas deste domínio
     }),
   )
   .use(registerRestaurant)
