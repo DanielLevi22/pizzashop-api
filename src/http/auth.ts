@@ -42,25 +42,25 @@ export const auth = new Elysia()
     }),
   )
   .use(cookie())
-  .derive({ as: 'scoped' }, ({ jwt, cookie, set }) => ({
+  .derive({ as: 'scoped' }, ({ jwt, cookie: { auth }, set }) => ({
     signUser: async (payload: Static<typeof jwtPayload>) => {
       const token = await jwt.sign(payload)
-
-      cookie.auth.value = token
-      cookie.auth.httpOnly = true
-      cookie.auth.maxAge = 60 * 60 * 24 * 7 // 7 days
-      cookie.auth.path = '/'
-      cookie.auth.secure = env.NODE_ENV === 'production'
-      cookie.auth.sameSite = 'none'
+      auth.remove()
+      auth.value = token
+      auth.httpOnly = true
+      auth.maxAge = 60 * 60 * 24 * 7 // 7 days
+      auth.path = '/'
+      auth.secure = env.NODE_ENV === 'production'
+      auth.sameSite = 'none'
     },
 
     signOut: async () => {
-      cookie.auth.remove()
+      auth.remove()
     },
 
     getCurrentUser: async () => {
       try {
-        const payload = await jwt.verify(cookie.auth.value)
+        const payload = await jwt.verify(auth.value)
         console.log(payload)
         if (!payload) {
           throw new UnauthorizedError()
