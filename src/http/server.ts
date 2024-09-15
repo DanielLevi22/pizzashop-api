@@ -59,23 +59,24 @@ const app = new Elysia()
   .use(updateProfile)
   .use(updateMenu)
 
-  .onError(({ code, set, error }) => {
+  .onError(({ code, error, set }) => {
     switch (code) {
       case 'VALIDATION': {
         set.status = error.status
+        console.error('Validation error:', error)
         return error.toResponse()
       }
       case 'NOT_FOUND': {
+        console.error('Resource not found:', error)
         return new Response(null, { status: 404 })
       }
       default: {
-        set.status = 500
-        console.error(error)
-
+        console.error('Unhandled error:', error)
         return new Response(null, { status: 500 })
       }
     }
   })
+
 app.listen(3333, () => {
   console.log('Server is running on port 3333')
 })

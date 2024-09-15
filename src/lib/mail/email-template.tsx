@@ -1,55 +1,63 @@
 import {
-  Html,
-  Head,
   Body,
+  Button,
   Container,
-  Section,
-  Text,
+  Head,
+  Heading,
+  Hr,
+  Html,
   Link,
-  Img,
+  Preview,
+  Section,
+  Tailwind,
+  Text,
 } from '@react-email/components'
 
-interface EmailTemplateProps {
+interface AuthenticationMagicLinkTemplateProps {
   authLinkString: string
 }
 
-export const EmailTemplate = ({ authLinkString }: EmailTemplateProps) => (
-  <Html>
-    <Head />
-    <Body style={{ fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }}>
-      <Container style={{ padding: '20px', backgroundColor: '#f4f4f4' }}>
-        <Section style={{ textAlign: 'center', padding: '20px' }}>
-          <Img
-            src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg"
-            alt="Pizza Shop Logo"
-            width="150"
-            style={{ marginBottom: '20px', textAlign: 'center' }}
-          />
-          <Text style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
-            Welcome to Pizza Shop!
-          </Text>
-          <Text style={{ fontSize: '16px', color: '#666', marginTop: '10px' }}>
-            Click the button below to authenticate and access your dashboard:
-          </Text>
-          <Section style={{ marginTop: '20px' }}>
-            <Link
-              href={authLinkString}
-              style={{
-                display: 'inline-block',
-                padding: '10px 20px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#fff',
-                backgroundColor: '#ff5722',
-                borderRadius: '5px',
-                textDecoration: 'none',
-              }}
-            >
-              Authenticate Now
-            </Link>
-          </Section>
-        </Section>
-      </Container>
-    </Body>
-  </Html>
-)
+export function AuthenticationMagicLinkTemplate({
+  authLinkString,
+}: AuthenticationMagicLinkTemplateProps) {
+  const previewText = `Faça login na Pizza Shop`
+
+  return (
+    <Html>
+      <Head />
+      <Preview>{previewText}</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
+            <Section className="mt-[32px] text-center">
+              <span className="text-2xl">🍕</span>
+            </Section>
+            <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+              Faça login na Pizza Shop
+            </Heading>
+
+            <Section className="text-center mt-[32px] mb-[32px]">
+              <Button
+                className="bg-sky-500 rounded text-white px-5 py-3 text-[12px] font-semibold no-underline text-center"
+                href={authLinkString}
+              >
+                Entrar agora
+              </Button>
+            </Section>
+            <Text className="text-black text-[14px] leading-[24px]">
+              ou copie a URL abaixo e cole em seu browser:{' '}
+              <Link href={authLinkString} className="text-sky-500 no-underline">
+                {authLinkString}
+              </Link>
+            </Text>
+            <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
+            <Text className="text-[#666666] text-[12px] leading-[24px]">
+              Se você não solicitou esse link de autenticação, apenas descarte
+              esse e-mail.
+            </Text>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  )
+}

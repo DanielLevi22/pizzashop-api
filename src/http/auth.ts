@@ -16,13 +16,22 @@ export const auth = new Elysia()
     NOT_A_MANAGER: NotAManagerError,
   })
   .onError(({ code, error, set }) => {
+    console.error(`Error Code: ${code}, Message: ${error.message}`)
+    console.error(`Stack Trace: ${error.stack}`)
+
     switch (code) {
       case 'UNAUTHORIZED':
         set.status = 401
         return { code, message: error.message }
       case 'NOT_A_MANAGER':
-        set.status = 401
+        set.status = 403
         return { code, message: error.message }
+      default:
+        set.status = 500
+        return {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'An internal server error occurred.',
+        }
     }
   })
   .use(
@@ -33,7 +42,7 @@ export const auth = new Elysia()
     }),
   )
   .use(cookie())
-  .derive({ as: 'scoped' }, ({ jwt, cookie }) => ({
+  .derive({ as: 'scoped' }, ({ jwt, cookie, set }) => ({
     signUser: async (payload: Static<typeof jwtPayload>) => {
       const token = await jwt.sign(payload)
 
@@ -48,14 +57,24 @@ export const auth = new Elysia()
     },
 
     getCurrentUser: async () => {
-      const payload = await jwt.verify(cookie.auth.value)
-      if (!payload) {
-        throw new UnauthorizedError()
-      }
+      try {
+        const payload = await jwt.verify(cookie.auth.value)
+        if (!payload) {
+          throw new UnauthorizedError()
+        }
 
-      return {
-        userId: payload.id,
-        restaurantId: payload.restaurantId,
+        return {
+          userId: payload.id,
+          restaurantId: payload.restaurantId,
+        }
+      } catch (error) {
+        if (error instanceof UnauthorizedError) {
+          set.status = 401
+          throw error
+        }
+
+        set.status = 500
+        throw new Error('Internal Server Error')
       }
     },
   }))

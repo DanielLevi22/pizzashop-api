@@ -1,4 +1,4 @@
-POST http://localhost:3333/restaurants
+POST https://pizzashop-api-production.up.railway.app//restaurants
 Content-Type: application/json
 
 {
@@ -16,3 +16,8 @@ Content-Type: application/json
 {
     "email": "admin@admin.com",
 }
+
+
+###
+
+GET  http://localhost:3333/managed-restaurante
