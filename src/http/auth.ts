@@ -59,6 +59,7 @@ export const auth = new Elysia()
     getCurrentUser: async () => {
       try {
         const payload = await jwt.verify(cookie.auth.value)
+        console.log(payload)
         if (!payload) {
           throw new UnauthorizedError()
         }

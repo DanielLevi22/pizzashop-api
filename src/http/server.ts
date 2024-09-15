@@ -30,7 +30,7 @@ const app = new Elysia()
       origin: (request): boolean => {
         const origin = request.headers.get('origin')
 
-        if (!origin) {
+        if (origin !== 'https://pizza-shop-web-rouge.vercel.app/') {
           return false
         }
 
