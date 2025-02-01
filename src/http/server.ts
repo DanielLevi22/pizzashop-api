@@ -28,13 +28,19 @@ const app = new Elysia()
     allowedHeaders: ['content-type'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
     origin: (request) => {
-      // Retorna apenas true ou false
       const allowedOrigins = new Set(['https://pizza-shop-web-rouge.vercel.app']);
       const origin = request.headers.get('origin');
-      return !!origin && allowedOrigins.has(origin);
-    },
-  })
+      console.log("Request origin:", origin);
+      const allowed = !!origin && allowedOrigins.has(origin);
+      console.log("Is origin allowed?", allowed);
+      return allowed;
+    }})
+  
 )
+.options('*', ({ set }) => {
+  set.status = 204
+  return ''
+})
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
@@ -73,6 +79,7 @@ const app = new Elysia()
       }
     }
   })
+
 
 app.listen(3333, () => {
   console.log('Server is running on port 3333')
