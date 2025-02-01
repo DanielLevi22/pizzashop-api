@@ -22,14 +22,16 @@ import { updateProfile } from './route/update-profile'
 import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
-app.use(
-  cors({
-    origin: "https://pizza-shop-web-rouge.vercel.app", 
-    credentials: true, 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'], 
-  })
-)
+app.use(cors({
+  origin: [
+    "https://pizza-shop-web-rouge.vercel.app",
+    "https://pizza-shop-web-git-main-daniel-levis-projects.vercel.app",
+    "https://pizza-shop-6yc92y6it-daniel-levis-projects.vercel.app"
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}))
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
