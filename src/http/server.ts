@@ -23,10 +23,22 @@ import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
 app.use(cors({
-  origin: '*', // Temporariamente para teste
+  origin: ["https://pizza-shop-web-rouge.vercel.app", "https://pizza-shop-web-git-main-daniel-levis-projects.vercel.app/", "https://pizza-shop-6yc92y6it-daniel-levis-projects.vercel.app/"] , 
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+  allowedHeaders: '*',
+  exposedHeaders: ['*'],
+  maxAge: 86400,
   preflight: true
 }))
+
+// Para registrar os cabeçalhos manualmente em cada requisição
+app.onRequest(({ request, set }) => {
+  console.log(`${request.method} ${request.url}`)
+  set.headers['Access-Control-Allow-Origin'] = request.headers.get('origin') || '*'
+  set.headers['Access-Control-Allow-Credentials'] = 'true'
+})
+
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
