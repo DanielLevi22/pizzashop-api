@@ -33,9 +33,14 @@ app.use(cors({
 }))
 
 .onRequest(({ request, set }) => {
-  console.log(`${request.method} ${request.url}`)
-  set.headers['Access-Control-Allow-Origin'] = request.headers.get('origin') || '*'
-  set.headers['Access-Control-Allow-Credentials'] = 'true'
+  if (request.method === 'OPTIONS') {
+    set.status = 204
+    set.headers['Access-Control-Allow-Origin'] = request.headers.get('origin') || '*'
+    set.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+    set.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    set.headers['Access-Control-Allow-Credentials'] = 'true'
+    return new Response(null)
+  }
 })
 
   .use(registerRestaurant)
