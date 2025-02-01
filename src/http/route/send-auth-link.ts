@@ -5,6 +5,8 @@ import { createId } from '@paralleldrive/cuid2'
 import { env } from '../../env'
 import { AuthenticationMagicLinkTemplate } from '../../lib/mail/email-template.tsx'
 import { resend } from '../../lib/mail/client.ts'
+import { renderToString } from 'react-dom/server';
+
 export const sendAuthLink = new Elysia().post(
   '/authenticate',
   async ({ body }) => {
@@ -29,15 +31,18 @@ export const sendAuthLink = new Elysia().post(
 
     const authLink = new URL('/auth-links/authenticate', env.API_BASE_URL)
 
+
+    
     authLink.searchParams.set('code', authLinkCode)
     authLink.searchParams.set('redirect', env.AUTH_REDIRECT_URL)
-
+    
     const authLinkString = authLink.toString()
+    const htmlContent = renderToString(AuthenticationMagicLinkTemplate({ authLinkString }))
     const { data, error } = await resend.emails.send({
       from: 'Pizza Shop <piza@danieldev.tech>', // Formato correto com nome e e-mail
       to: [email],
       subject: 'Authenticate to Pizza Shop',
-      react: AuthenticationMagicLinkTemplate({ authLinkString }), // Supondo que você tem o nome do usuário
+      html: htmlContent
     })
 
     console.log('Resend - data', data, error)
