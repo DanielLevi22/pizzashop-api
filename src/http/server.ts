@@ -28,9 +28,11 @@ const app = new Elysia()
       allowedHeaders: ['content-type'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
       origin: (request) => {
-        const allowedOrigins = ['https://pizza-shop-web-rouge.vercel.app']
-        const origin = request.headers.get('origin') ?? ''
-        return allowedOrigins.includes(origin)
+        const allowedOrigins = new Set([
+          'https://pizza-shop-web-rouge.vercel.app',
+        ])
+        const origin = request.headers.get('origin')
+        return !!origin && allowedOrigins.has(origin)
       },
     }),
   )
