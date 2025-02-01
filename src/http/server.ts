@@ -23,15 +23,9 @@ import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
 app.use(cors({
-  origin: [
-    "https://pizza-shop-web-rouge.vercel.app",
-    "https://pizza-shop-web-git-main-daniel-levis-projects.vercel.app",
-    "https://pizza-shop-6yc92y6it-daniel-levis-projects.vercel.app"
-  ],
+  origin: '*', // Temporariamente para teste
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-  preflight: true 
+  preflight: true
 }))
   .use(registerRestaurant)
   .use(sendAuthLink)
