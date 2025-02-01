@@ -22,8 +22,10 @@ import { updateProfile } from './route/update-profile'
 import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
+
+// CORS configuration with logging
 app.use(cors({
-  origin: ["https://pizza-shop-web-rouge.vercel.app", "https://pizza-shop-web-git-main-daniel-levis-projects.vercel.app", "https://pizza-shop-czgz5s6ej-daniel-levis-projects.vercel.app"] , 
+  origin: ["https://pizza-shop-web-rouge.vercel.app", "https://pizza-shop-web-git-main-daniel-levis-projects.vercel.app", "https://pizza-shop-czgz5s6ej-daniel-levis-projects.vercel.app"], 
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
   allowedHeaders: '*',
@@ -32,17 +34,32 @@ app.use(cors({
   preflight: true
 }))
 
+// Log every incoming request (CORS & others)
 .onRequest(({ request, set }) => {
+  console.log('Incoming request method:', request.method)
+  console.log('Request headers:', request.headers)
+  
+  // CORS preflight
   if (request.method === 'OPTIONS') {
+    console.log('Preflight OPTIONS request detected')
     set.status = 204
     set.headers['Access-Control-Allow-Origin'] = request.headers.get('origin') || '*'
     set.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
     set.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     set.headers['Access-Control-Allow-Credentials'] = 'true'
+    console.log('CORS headers set for OPTIONS request')
     return new Response(null)
   }
+  
+  // Log normal requests (GET, POST, etc.)
+  console.log('CORS headers set for normal request')
+  set.headers['Access-Control-Allow-Origin'] = request.headers.get('origin') || '*'
+  set.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+  set.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+  set.headers['Access-Control-Allow-Credentials'] = 'true'
 })
 
+  // Define your routes
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
@@ -64,7 +81,9 @@ app.use(cors({
   .use(updateProfile)
   .use(updateMenu)
 
+  // Global error handling with logs
   .onError(({ code, error, set }) => {
+    console.error('Error occurred:', error)
     switch (code) {
       case 'VALIDATION': {
         set.status = error.status
@@ -82,9 +101,9 @@ app.use(cors({
     }
   })
 
-
-  app.listen( 3333, () => {
-    console.log(`🚀 Server is running on port   3333`)
+  // Start the server with logs
+  app.listen(3333, () => {
+    console.log(`🚀 Server is running on port 3333`)
     console.log('CORS configuration:', {
       origin: '*',
       credentials: true,
