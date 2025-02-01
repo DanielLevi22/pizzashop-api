@@ -22,20 +22,19 @@ import { updateProfile } from './route/update-profile'
 import { updateMenu } from './route/update-menu'
 
 const app = new Elysia()
-  .use(
-    cors({
-      credentials: true,
-      allowedHeaders: ['content-type'],
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-      origin: (request) => {
-        const allowedOrigins = new Set([
-          'https://pizza-shop-web-rouge.vercel.app',
-        ])
-        const origin = request.headers.get('origin')
-        return !!origin && allowedOrigins.has(origin)
-      },
-    }),
-  )
+.use(
+  cors({
+    credentials: true,
+    allowedHeaders: ['content-type'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+    origin: (request) => {
+      // Retorna apenas true ou false
+      const allowedOrigins = new Set(['https://pizza-shop-web-rouge.vercel.app']);
+      const origin = request.headers.get('origin');
+      return !!origin && allowedOrigins.has(origin);
+    },
+  })
+)
   .use(registerRestaurant)
   .use(sendAuthLink)
   .use(authenticateFromLink)
