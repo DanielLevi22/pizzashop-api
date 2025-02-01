@@ -29,8 +29,9 @@ app.use(cors({
     "https://pizza-shop-6yc92y6it-daniel-levis-projects.vercel.app"
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  preflight: true 
 }))
   .use(registerRestaurant)
   .use(sendAuthLink)
